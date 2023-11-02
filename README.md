@@ -10,11 +10,25 @@ Download preprocessed data files via `gsutil cp gs://reclip-sanjays/reclip_data.
 does not include images.
 Download the images for RefCOCO/g/+ from [http://images.cocodataset.org/zips/train2014.zip](http://images.cocodataset.org/zips/train2014.zip). Download the images for RefGTA from [the original dataset release](https://github.com/mikittt/easy-to-understand-REG/tree/master/pyutils/refer2). NOTE: As stated in the original RefGTA dataset release, the images in RefGTA may only be used "in non-commercial and research uses."
 
+### To download specific images
+For an image with filename `COCO_train2014_000000380440_491042.jpg` in the jsonl file, you can download the image from http://images.cocodataset.org/train2014/COCO_train2014_000000380440.jpg
+
+- Update the image name accordingly to download the image.
+
 ## Results with CLIP/ALBEF/MDETR
 The following format can be used to run experiments:
 ```
 python main.py --input_file INPUT_FILE --image_root IMAGE_ROOT --method {parse/baseline/gradcam/random} --gradcam_alpha 0.5 0.5 --box_method_aggregator sum {--clip_model RN50x16,ViT-B/32} {--albef_path albef --albef_mode itm/itc --albef_block_num 8/11} {--mdetr mdetr_efficientnetB3/mdetr_efficientnetB3_refcocoplus/mdetr_effcientnetB3_refcocog} {--box_representation_method crop,blur/crop/blur/shade} {--detector_file PATH_TO_DETECTOR_FILE} {--cache_path PATH_TO_CACHE_DIRECTORY} {--output_file PATH_TO_OUTPUT_FILE}
 ```
+
+```bash
+# Get results
+python main.py --input_file reclip_data/test.jsonl --image_root reclip_data/images/ --method parse --box_method_aggregator sum --clip_model RN50x16,ViT-B/32 --box_representation_method crop,blur --output_file output/reclip_test.txt
+
+# Visualize results
+python show_annotations.py
+```
+
 (`/` is used above to denote different options for a given argument.)
 
 `--input_file`: should be in `.jsonl` format (we provide these files for the datasets discussed in our paper; see the Data Download information above).
